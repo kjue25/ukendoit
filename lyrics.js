@@ -1,36 +1,54 @@
-var times;
+function highlight(words, wordNum) {
+	$('#lyrics').html("");
+	var el = $('<span></span>');
+	var text = '';
+	for (var i=0; i < wordNum; i++){
+		text += words[i] + " ";
+	}
+	console.log("text", text);
+	el.html(text);
+	$('#lyrics').append(el);
+
+	$('#lyrics').append($('<span style="color:red">'+words[wordNum]+'</span>'));
+
+	el = $('<span></span>');
+	text = '';
+	for (var i=wordNum+1; i < words.length; i++) {
+		text += " " + words[i];
+
+	}
+	el.html(text);
+	$('#lyrics').append(el);
+}
+
+var globalTimes = [];
+var globalCount = -1;
+
+function saveTime(word) {
+	globalTimes.push({word: word , time: (new Date()).getTime()});
+};
+
+function timeString(times) {
+	var startTime = times[0];
+	var ret = '';
+	for (var i = 0; i < times.length; i++) {
+		var t = times[i].time - startTime;
+		ret += times[i].word + ': ' + t + '\n';
+	}
+	return ret;
+}
+
+
 $(function() {
 
 	var lyrics = $('#lyrics');
 	var words = lyrics.html().split(" "); //array of words
 
-	function highlight(wordNum) {
-		lyrics.html("");
-		var el = $('<span></span>');
-		var text = '';
-		for (var i=0; i < wordNum; i++){
-			text += words[i] + " ";
-		}
-		console.log("text", text);
-		el.html(text);
-		$('#lyrics').append(el);
-
-		$('#lyrics').append($('<span style="color:red">'+words[wordNum]+'</span>'));
-
-		el = $('<span></span>');
-		text = '';
-		for (var i=wordNum+1; i < words.length; i++) {
-			text += " " + words[i];
-
-		}
-		el.html(text);
-		$('#lyrics').append(el);
-	}
-	var count = 0;
-	setInterval(function() {
-		count = (count + 1) % words.length;
-		highlight(count);
-	}, 1000);
+	
+	// setInterval(function() {
+	// 	globalCount = (globalCount + 1) % words.length;
+	// 	highlight(words, globalCount);
+	// }, 1000);
 	console.log(words);
 
 	var timestamps;
@@ -50,10 +68,19 @@ $(function() {
 	}
 
 	$(document).keypress(function(e) {
-		var select = getNextWord();
-		select = new String(select).split(" ");
-		timestamps[counter] = new Date().getTime();
-		console.log(timestamps[counter]);
-		counter++;
+		globalCount = globalCount + 1;
+		if (globalCount >= words.length) {
+			return;
+		}
+		
+		highlight(words, globalCount);
+		saveTime(words[globalCount]);
+		$('#times').append(timeString(globalTimes));
+		// console.log(globalTimes);
+		// var select = getNextWord();
+		// select = new String(select).s plit(" ");
+		// timestamps[counter] = new Date().getTime();
+		// console.log(timestamps[counter]);
+		// counter++;
 	});
 });
