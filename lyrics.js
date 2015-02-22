@@ -38,17 +38,22 @@ function timeString(times) {
 	return ret;
 }
 
+//need to set time being passed into setInterval
+function demoHighlight(words, times, count) {
+	 setTimeout(function() {
+	 	count = (count + 1) % words.length;
+	 	highlight(words, count);
+	 	demoHighlight(words, times, count);
+	 }, times[count].time);
+}
+
+//make array 2D to account for line breaks
 
 $(function() {
 
 	var lyrics = $('#lyrics');
 	var words = lyrics.html().split(" "); //array of words
 
-	
-	// setInterval(function() {
-	// 	globalCount = (globalCount + 1) % words.length;
-	// 	highlight(words, globalCount);
-	// }, 1000);
 	console.log(words);
 
 	var timestamps;
@@ -57,15 +62,8 @@ $(function() {
 	console.log('hello');
 
 	$("#play").click(function() {
-		setLyricsTimer(highlightNextWord, timestamps);
-		//start timer
-		//highlight word with each time
+		demoHighlight(words, globalTimes);
 	});
-
-	function setLyricsTimer(callback, count, times) {
-		// var 
-		var interval = timestamps[count] - timestamsp[count-1];
-	}
 
 	$(document).keypress(function(e) {
 		globalCount = globalCount + 1;
@@ -76,11 +74,5 @@ $(function() {
 		highlight(words, globalCount);
 		saveTime(words[globalCount]);
 		$('#times').html(timeString(globalTimes));
-		// console.log(globalTimes);
-		// var select = getNextWord();
-		// select = new String(select).s plit(" ");
-		// timestamps[counter] = new Date().getTime();
-		// console.log(timestamps[counter]);
-		// counter++;
 	});
 });
