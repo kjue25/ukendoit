@@ -29,30 +29,34 @@
           </div>
           </nav>
 
-	<div class="chords">
-		<div class="container-fluid centered">
-			<ul id="chord-list">
-			</ul>
-		</div>
-	</div>
-	<div class="container-fluid centered height">
-		<div class="row height">
-			<div class="col-md-3 info">
-			<button onclick="playSong()">start</button>
-			<button onclick="stopSong()">stop</button>
-			<div id="curr-chord"><img src="img/bignull.png"></div>
-			</div>
-			<div class="col-md-9 height">
-		<div class="lyrics">
-			<div class="half"></div>
-			<ul id="lyrics">
-	
-			</ul>
-			<div class="half"></div>
-		</div>
-		</div>
-		</div>
-	</div>
+          <div class="chords">
+            <div class="container-fluid centered">
+              <ul id="chord-list">
+              </ul>
+            </div>
+          </div>
+          <div class="container-fluid centered height">
+            <div class="row height">
+              <div class="col-md-3 info">
+                <button onclick="playSong()">start</button>
+                <button onclick="stopSong()">stop</button>
+                <div>
+                  <label>Speed:</label>
+                  <input type="range" name="speed" id="scale" value="100" min="0" max="200" data-show-value="true" onclick="rescaleSong(this.value)">
+                </div>
+                <div id="curr-chord"><img src="img/bignull.png"></div>
+              </div>
+              <div class="col-md-9 height">
+                <div class="lyrics">
+                  <div class="half"></div>
+                  <ul id="lyrics">
+
+                  </ul>
+                  <div class="half"></div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div class="chords">
             <div class="container-fluid centered">
@@ -66,10 +70,6 @@
                 <button onclick="playSong()">start</button>
                 <button onclick="stopSong()">stop</button>
                 <div id="curr-chord"></div>
-                <div>
-                  <label>Speed:</label>
-                  <input type="range" name="speed" id="scale" value="100" min="0" max="200" data-show-value="true" onclick="rescaleSong(this.value)">
-                </div>
               </div>
               <div class="col-md-9 height">
                 <div class="lyrics">
