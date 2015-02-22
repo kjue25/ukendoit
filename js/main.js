@@ -109,11 +109,14 @@ function stopSong() {
 
 /*scales delay for the song */
 function rescaleSong(newScale) {
+  var wasPlaying = false
+  if (timeouts.length > 0) wasPlaying = true 
   stopSong();
   scale = newScale/100;
   console.log(scale);
   curr_delay = curr_delay*scale;
-  playSong();
+  if (wasPlaying)
+    playSong();
 }
 
 /* functions called onload: shows chords and shows song */
