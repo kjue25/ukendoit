@@ -367,6 +367,7 @@ h1 {
 }
 .lyrics {
 	height:80%;
+	width:200%;
 	padding-top:50px;
 	font-family: 'Open Sans', sans serif;
 	font-size:14pt;
