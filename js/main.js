@@ -177,26 +177,19 @@ function changeLine(forward) {
 			}
 		}
 	}
-
 	var ind;
-	for (var d in delays) {
-		if (curr_delay >= delays[d]) {
-			ind = d;
+	for (var d in delays) {	
+		if (curr_delay < delays[d]) {
+			ind = d-1;
 			break;
 		}
 	}
-	console.log(ind);
 
-	if (forward) {
-		if (ind != delays.length - 1) {
-			console.log (ind);
+	console.log(curr_delay);
+	console.log(forward);
+	if (forward && ind != delays.length - 1)
 			curr_delay = delays[ind+1];
-		}
-	} else {
-		if (ind != 0) {
-			console.log (ind);
+	if (!forward && ind != 0)
 			curr_delay = delays[ind-1];
-		}
-	}
 }
 
