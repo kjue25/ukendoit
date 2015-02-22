@@ -46,7 +46,7 @@ function highlightWord(line_elem, words, n) {
     showChord(words[n].chord);
   }
   if (n != -1)
-    curr_delay += parseInt(words[n].delay)/scale;
+    curr_delay += parseInt(words[n].delay);///scale;
   $(line_elem).html("");
   for (var w in words)
     $(line_elem).append(getWordHTML(words[w], n == w));
@@ -62,9 +62,9 @@ function playLine(line, el, d) {
   var delay = d;
   /* highlights each word */
   for (var w in line) {
-    delay += parseInt(line[w].delay)/scale;
+    delay += parseInt(line[w].delay)///scale;
     if (curr_delay <= delay)
-      timeouts.push (setTimeout(highlightWord, delay/scale - curr_delay/scale, el, line, w));
+      timeouts.push (setTimeout(highlightWord, (delay - curr_delay)/scale, el, line, w));
   }
   return delay;
 }
@@ -85,9 +85,9 @@ function playVerse(verse, v, d) {
   for (var l in verse) {
     var el = $(".line" + l + ".verse" + v);
     if (curr_delay <= delay) {
-      timeouts.push(setTimeout(scrollToLine, delay/scale - curr_delay/scale, ".line" + l + ".verse" + v));
+      timeouts.push(setTimeout(scrollToLine, (delay - curr_delay)/scale, ".line" + l + ".verse" + v));
       if (prev_el != null) {
-        timeouts.push (setTimeout(highlightWord, (delay/scale - curr_delay/scale)+ parseInt(verse[l][0].delay)/scale, $(prev_el), prev_line, -1));
+        timeouts.push (setTimeout(highlightWord, (delay - curr_delay + parseInt(verse[l][0].delay))/scale, $(prev_el), prev_line, -1));
       }
     }
     delay = playLine(verse[l], el, delay);
@@ -108,6 +108,7 @@ function playSong() {
 
 /* removes all timeouts for song */
 function stopSong() {
+	$("span").removeClass("highlight");
   for (var t in timeouts)
     window.clearTimeout(timeouts[t]);
   console.log(curr_delay);
@@ -120,7 +121,7 @@ function rescaleSong(newScale) {
   if (timeouts.length > 0) wasPlaying = true 
   stopSong();
   newDelay = newScale/100;
-  curr_delay = (curr_delay*scale)/(newDelay);
+  //curr_delay = (curr_delay*scale)/(newDelay);
   scale = newDelay;
   console.log(scale);
   if (wasPlaying)
@@ -166,10 +167,12 @@ function changeLine(forward) {
 	if (timeouts.length > 0) return;
 	var totaldelay = 0;
 	var delays = [];
+	var lines = [];
 	for (var v in song.verses) {
 		var verse = song.verses[v];
     		for (var l in verse) {
 			var line = verse[l];
+			lines.push( ".line" + l + ".verse" + v);
 			delays.push(totaldelay);
 			for (var w in line) {
 				var word = line[w];
@@ -187,9 +190,13 @@ function changeLine(forward) {
 
 	console.log(curr_delay);
 	console.log(forward);
-	if (forward && ind != delays.length - 1)
-			curr_delay = delays[ind+1];
-	if (!forward && ind != 0)
-			curr_delay = delays[ind-1];
+	if (forward && ind != delays.length - 1) {
+		curr_delay = delays[ind+1];
+		scrollToLine(lines[ind+1]);
+	}
+	if (!forward && ind != 0) {
+		curr_delay = delays[ind-1];
+		scrollToLine(lines[ind-1]);
+	}
 }
 
