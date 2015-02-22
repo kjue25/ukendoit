@@ -13,8 +13,9 @@ var song = JSON.parse('{"verses":[[[{"delay": "0", "txt": "Don\'t", "chord": "C"
 var curr_delay = 0;
 var timeouts = [];
 function getWordHTML(word, highlighted) {
-    if (!word.hasOwnProperty('chord')) word.chord = "";
-    var html = "<div class=\"word\"><span class=\"chord\">"+word.chord+"</span><br>" + word.txt + "</div>";
+    var chord = word.chord;
+    if (!word.hasOwnProperty('chord') || chord == null) chord = "";
+    var html = "<div class=\"word\"><span class=\"chord\">"+chord+"</span><br>" + word.txt + "</div>";
     if (highlighted)
         return "<span class=\"highlight\">" + html + "</span> ";
     return html;
@@ -24,7 +25,7 @@ function getWordHTML(word, highlighted) {
 function showChord(chord) {
         $(".chords li").removeClass("active");
         $(".chords " + "." + chord).addClass("active");
-	$("#curr-chord").html("<img src=\"img/" + chord + ".png\">");
+	$("#curr-chord").html("<img src=\"img/big" + chord + ".png\">");
 }
 
 /* highlights a word in a particular line
