@@ -11,7 +11,7 @@
           <meta name="viewport" content="width=device-width, initial-scale=1">
 
           <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-	  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css">
+          <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css">
 
           <link rel="stylesheet" href="css/bootstrap.min.css">
           <link rel="stylesheet" href="css/normalize.css">
@@ -54,10 +54,12 @@
                   <input type="range" name="speed" id="scale" value="100" min="0" max="200" data-show-value="true" onclick="rescaleSong(this.value)">
                 </div>
                 <div id="curr-chord-pic"><img src="img/bignull.png"></div>
-		<div id="curr-chord"></div>
+                <div id="curr-chord"></div>
               </div>
               <div class="col-md-9 height">
-
+                <div class="top-fade-most"></div>
+                <div class="top-fade-more"></div>
+                <div class="top-fade"></div>
                 <div class="lyrics">
                   <div class="half"></div>
                   <ul id="lyrics">
@@ -65,6 +67,9 @@
                   </ul>
                   <div class="half"></div>
                 </div>
+                <div class="bottom-fade"></div>
+                <div class="bottom-fade-more"></div>
+                <div class="bottom-fade-most"></div>
               </div>
             </div>
           </div>
@@ -101,5 +106,6 @@
             <script src="js/main.js"></script>
 
             <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+            <div class="bottom-fade"></div>
           </body>
         </html>
