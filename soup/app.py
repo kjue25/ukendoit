@@ -2,6 +2,7 @@ from flask import Flask, request
 from flask import render_template
 import scraper
 import codecs
+import requests
 
 app = Flask(__name__)
 
@@ -20,7 +21,16 @@ def show_post(url):
 
 @app.route('/scrape/<url>', methods=['GET'])
 def scrape(url):
-    f = codecs.open('riptide.html', 'r+', 'utf8')
+    f = codecs.open('somewhere.html', 'r+', 'utf8')
+    #content = requests.get('https://ukutabs.com/i/israel-kamakawiwoole/somewhere-over-the-rainbow-what-a-wonderful-world/')
+    #f.write(content.text)
+    #f.seek(0)
+    #f = codecs.open('beatles.html', 'r+', 'utf8')
+    #content = requests.get('https://ukutabs.com/t/the-beatles/let-it-be/')
+    #f.write(content.text)
+    #f.seek(0)
+    #json_from_content(f.read())
+    #f.close()
     ret = scraper.json_from_content(f.read())
     f.close()
     return ret

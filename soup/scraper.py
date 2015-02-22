@@ -53,17 +53,20 @@ def regex_parts_to_string(tups):
     return ret
 
 def infuse_chords(chordsLine, wordLine):
+        print 'INPUT', chordsLine, wordLine
 	chords = [chord for chord in chordsLine.split(" ") if chord != ""]
 	chordIndices = []
 	for chord in chords:
-		index = chordsLine.find(chord)
+		index = chordsLine.find(chord) # here
+                chordsLine = chordsLine[:index] + " " + chordsLine[index+1:]
 		chordIndices.append((index, chord))
 	for (index, chord) in chordIndices[::-1]:
 		wordLine = wordLine[:index] + "(" + chord + ")" + wordLine[index:]
-        print 'wordLine', wordLine
-	return string_to_word_objs(wordLine)
+        #print 'wordLine', wordLine
+        return string_to_word_objs(wordLine)
 
 def string_to_word_objs(chordsWordLine):
+        #print 'INPUT', chordsWordLine
 	words = chordsWordLine.split(" ")
 	current_chord = None
 	word_objs = []
@@ -74,7 +77,7 @@ def string_to_word_objs(chordsWordLine):
                 word_objs.append({"txt": text, "chord": current_chord, "delay": 1})
             else:
                 word_objs.append({"txt": word, "chord": current_chord, "delay": 1})
-        print 'string thing', word_objs
+        #print 'OUTPUT', word_objs
 	return word_objs
 
 
