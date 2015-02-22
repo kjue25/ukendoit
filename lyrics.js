@@ -75,7 +75,7 @@ $(function() {
 		
 		highlight(words, globalCount);
 		saveTime(words[globalCount]);
-		$('#times').append(timeString(globalTimes));
+		$('#times').html(timeString(globalTimes));
 		// console.log(globalTimes);
 		// var select = getNextWord();
 		// select = new String(select).s plit(" ");
