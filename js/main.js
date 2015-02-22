@@ -1,5 +1,8 @@
 $(document).ready ( function (){
   showSong();
+  // position line arrow!
+$("div#arrow").css({top: $(".lyrics").offset().top + $(".lyrics").height()/2-50}); 
+$("div#arrow").css({left: $("body").width()* 0.35});
   //console.log(chords);
   //showChords();
 });
@@ -69,7 +72,7 @@ function playLine(line, el, d) {
 
 /* scrolls to line_elem */
 function scrollToLine (line_elem) {
-  $(".lyrics").scrollTo(line_elem, {offsetTop:'500'});
+  $(".lyrics").scrollTo(line_elem, {offsetTop:"" + ($(".lyrics").height()/2 + 30)});
 }
 
 var prev_el = null;
@@ -158,5 +161,43 @@ function showSong() {
     }
     $(lyrics).append("<br>");
   }
+}
+
+function changeLine(forward) {
+	if (timeouts.length > 0) return;
+	var totaldelay = 0;
+	var delays = [];
+	for (var v in song.verses) {
+		var verse = song.verses[v];
+    		for (var l in verse) {
+			var line = verse[l];
+			delays.push(totaldelay);
+			for (var w in line) {
+				var word = line[w];
+				totaldelay += parseInt(word.delay);
+			}
+		}
+	}
+
+	var ind;
+	for (var d in delays) {
+		if (curr_delay >= delays[d]) {
+			ind = d;
+			break;
+		}
+	}
+	console.log(ind);
+
+	if (forward) {
+		if (ind != delays.length - 1) {
+			console.log (ind);
+			curr_delay = delays[ind+1];
+		}
+	} else {
+		if (ind != 0) {
+			console.log (ind);
+			curr_delay = delays[ind-1];
+		}
+	}
 }
 
