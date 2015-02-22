@@ -1,51 +1,64 @@
-<!doctype html>
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<html lang="en">
-<head>
-	<meta charset="utf-8">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-	<title>LYRICS</title>
-	<meta name="description" content="The HTML5 Herald">
-	<meta name="author" content="SitePoint">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
 
-<!--	<link rel="stylesheet" href="lyrics.css"> -->
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<script src="lyrics.js"></script>
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid centered">
+			<a class="navbar-brand" href="#"><h1><b>uke</b>ndoit<b> !</b></h1></a>
+		</div>
+	</nav>
 
- 
-</head>
+	<div class="chords">
+		<div class="container-fluid centered">
+			<ul id="chord-list">
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid centered height">
+		<div class="row height">
+			<div class="col-md-3 info">
+			<button onclick="playSong()">start</button>
+			<button onclick="stopSong()">stop</button>
+			<div id="curr-chord"></div>
+			</div>
+			<div class="col-md-9 height">
+		<div class="lyrics">
+			<div class="half"></div>
+			<ul id="lyrics">
+	
+			</ul>
+			<div class="half"></div>
+		</div>
+		</div>
+		</div>
+	</div>
 
-<body>
-        <pre id = "lyrics">
-        Don't you worry there, my honey
-        We might not have any money
-        But we've got our love to pay the bills
+        <script src="js/jquery.min.js"></script>
+        <script src="js/jquery.scrollTo.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
 
-        Maybe I think you're cute and funny
-        Maybe I wanna do what bunnies do with you, if you know what I mean
-
-        Oh, let's get rich and buy our parents homes in the south of France
-        Let's get rich and give everybody nice sweaters and teach them how to dance
-        Let's get rich and build a house on a mountain making everybody look like ants
-        From way up there, you and I, you and I
-
-        Well, you might be a bit confused
-        And you might be a little bit bruised
-        But baby how we spoon like no one else
-        So I will help you read those books
-        If you will soothe my worried looks
-        And we will put the lonesome on the shelf
-
-        Oh, let's get rich and buy our parents homes in the south of France
-        Let's get rich and give everybody nice sweaters and teach them how to dance
-        Let's get rich and build a house on a mountain making everybody look like ants
-        From way up there, you and I, you and I
-
-        Oh let's get rich and buy our parents homes in the south of France
-        Let's get rich and give everybody nice sweaters and teach them how to dance
-        Let's get rich and build a house on a mountain making everybody look like ants
-        From way up there, you and I, you and I
-        </pre>
-	<button id="play"> Play song </button>
-	<div id="times"></div> 
-</body>
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    </body>
+</html>
