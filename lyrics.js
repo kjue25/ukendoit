@@ -28,21 +28,34 @@ function saveTime(word) {
 	globalTimes.push({word: word , time: (new Date()).getTime()});
 };
 
+function getPauseTimes(times) {
+    var ret = [];
+
+    ret.push({time: 0, word: times[0].word});
+	for (var i = 1; i < times.length; i++) {
+        ret.push({time: times[i].time - times[i - 1].time, word: times[i].word});
+	}
+    return ret;
+}
+
 function timeString(times) {
-	var startTime = times[0].time;
+    times = getPauseTimes(times);
 	var ret = '';
 	for (var i = 0; i < times.length; i++) {
-		var t = times[i].time - startTime;
-		ret += times[i].word + ': ' + t + '\n';
+		ret += times[i].word + ': ' + times[i].time + '\n';
 	}
 	return ret;
 }
 
 //need to set time being passed into setInterval
 function demoHighlight(words, times, count) {
+    if (count >= times.length) {
+        return;
+    }
+    console.log('timeout', times[count].time, 'count', count);
 	 setTimeout(function() {
-	 	count = (count + 1) % words.length;
 	 	highlight(words, count);
+        count = count + 1;
 	 	demoHighlight(words, times, count);
 	 }, times[count].time);
 }
@@ -62,7 +75,7 @@ $(function() {
 	console.log('hello');
 
 	$("#play").click(function() {
-		demoHighlight(words, globalTimes);
+        demoHighlight(words, getPauseTimes(globalTimes), 0);
 	});
 
 	$(document).keypress(function(e) {
