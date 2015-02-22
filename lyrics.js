@@ -29,7 +29,7 @@ function saveTime(word) {
 };
 
 function timeString(times) {
-	var startTime = times[0];
+	var startTime = times[0].time;
 	var ret = '';
 	for (var i = 0; i < times.length; i++) {
 		var t = times[i].time - startTime;
