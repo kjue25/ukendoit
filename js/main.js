@@ -1,6 +1,10 @@
 var song;
 $(document).ready ( function (){
-    $.get('/json/' + window.location.hash.substr(1), function(data) {
+    var hash = window.location.hash.substr(1);
+    if (hash.length == 0) {
+        hash = 'youandi.json';
+    }
+    $.get('/json/' + hash, function(data) {
             console.log('data', data);
         song = data;
         showSong();
