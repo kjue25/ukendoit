@@ -31,6 +31,9 @@ function showChord(chord) {
 		$("#curr-chord").html(chord);
 }
 
+//global for scaling the speed of scrolling
+var scale = 1;
+
 /* highlights a word in a particular line
  * line_elem: <li> element that contains line with highlighted word
  * words: list of words on line
@@ -41,14 +44,12 @@ function highlightWord(line_elem, words, n) {
     showChord(words[n].chord);
   }
   if (n != -1)
-    curr_delay += parseInt(words[n].delay);
+    curr_delay += parseInt(words[n].delay)/scale;
   $(line_elem).html("");
   for (var w in words)
     $(line_elem).append(getWordHTML(words[w], n == w));
 }
 
-//global for scaling the speed of scrolling
-var scale = 1;
 
 /* sets up timeouts for each line
  * line: array of words
@@ -59,9 +60,9 @@ function playLine(line, el, d) {
   var delay = d;
   /* highlights each word */
   for (var w in line) {
-    delay += parseInt(line[w].delay);
+    delay += parseInt(line[w].delay)/scale;
     if (curr_delay <= delay)
-      timeouts.push (setTimeout(highlightWord, ((delay - curr_delay))/scale, el, line, w));
+      timeouts.push (setTimeout(highlightWord, delay/scale - curr_delay/scale, el, line, w));
   }
   return delay;
 }
@@ -82,9 +83,9 @@ function playVerse(verse, v, d) {
   for (var l in verse) {
     var el = $(".line" + l + ".verse" + v);
     if (curr_delay <= delay) {
-      timeouts.push(setTimeout(scrollToLine, (delay - curr_delay)/scale, ".line" + l + ".verse" + v));
+      timeouts.push(setTimeout(scrollToLine, delay/scale - curr_delay/scale, ".line" + l + ".verse" + v));
       if (prev_el != null) {
-        timeouts.push (setTimeout(highlightWord, ((delay - curr_delay)+ parseInt(verse[l][0].delay))/scale, $(prev_el), prev_line, -1));
+        timeouts.push (setTimeout(highlightWord, (delay/scale - curr_delay/scale)+ parseInt(verse[l][0].delay)/scale, $(prev_el), prev_line, -1));
       }
     }
     delay = playLine(verse[l], el, delay);
@@ -116,9 +117,10 @@ function rescaleSong(newScale) {
   var wasPlaying = false
   if (timeouts.length > 0) wasPlaying = true 
   stopSong();
-  scale = newScale/100;
+  newDelay = newScale/100;
+  curr_delay = (curr_delay*scale)/(newDelay);
+  scale = newDelay;
   console.log(scale);
-  curr_delay = curr_delay*scale;
   if (wasPlaying)
     playSong();
 }
