@@ -299,9 +299,9 @@ h3 {
 
 h2,
 h3 {
-	page-break-after: avoid;
-}
-}
+  page-break-after: avoid;
+
+}}
 
 
 .navbar, .content {
@@ -328,6 +328,8 @@ h3 {
 }
 
 .info {
+	height:100%;
+	background-color:#fefefe;
 	color:#e56600;
 	text-align:right;
 }
@@ -366,7 +368,9 @@ h1 {
 	height:100%;
 }
 .lyrics {
+	border-left:#efefef 6px solid;
 	height:80%;
+	width:200%;
 	padding-top:50px;
 	font-family: 'Open Sans', sans serif;
 	font-size:14pt;
@@ -382,8 +386,9 @@ html, body {
 	height: 100%;
 	overflow:hidden;
 }
+
 span.highlight {
-	color:red;
+	color:#e56600;
 }
 
 .word {
@@ -409,7 +414,8 @@ span.highlight {
 #curr-chord{
 	position:relative;
 	top:130px;
-	padding-right:50px;
+	left:-50px;
+	padding-right:0px;
 	height:340;
 	font-weight:bold;
 	font-size:48pt;
@@ -418,4 +424,11 @@ span.highlight {
 
 input {
 	width:50%;
+}
+div#arrow {
+	position:fixed;
+	top:0px;
+	left:0px;
+	font-size:18pt;
+	color:#e56600;
 }

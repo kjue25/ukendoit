@@ -29,7 +29,8 @@
             <a class="navbar-brand" href="#"><h1><b>uke</b>ndoit<b> !</b></h1></a>
           </div>
           </nav>
-
+	  <div id="arrow"><i class="fa fa-chevron-right"></i>
+	  </div>
           <div class="chords">
             <div class="container-fluid centered">
               <ul id="chord-list">
@@ -39,17 +40,21 @@
           <div class="container-fluid centered height">
             <div class="row height">
               <div class="col-md-3 info">
-		     <div class="btn-group btn-group-lg" role="group">
-			     <button type="button" onclick="stopSong()" class="btn btn-default"><i class="fa fa-stop"></i></button>
-			       <button type="button" onclick="playSong()" class="btn btn-default"><i class="fa fa-play"></i></button>
-			       <button type="button" class="btn btn-default"><i class="fa fa-undo"></i></button>
-		       </div>
+                <div class="btn-group btn-group-lg" role="group">
+                  <button type="button" onclick="stopSong()" class="btn btn-default"><i class="fa fa-stop"></i></button>
+                  <button type="button" onclick="playSong()" class="btn btn-default"><i class="fa fa-play"></i></button>
+                  <button type="button" class="btn btn-default"><i class="fa fa-undo"></i></button>
+                </div><br>
+                <div class="btn-group btn-group-lg" role="group">
+                  <button type="button" onclick="changeLine(false)" class="btn btn-default"><i class="fa fa-step-backward"></i></button>
+                  <button type="button" onclick="changeLine(false)" class="btn btn-default"><i class="fa fa-step-forward"></i></button>
+                </div>
                 <div><br>
                   <label>speed</label>
                   <input type="range" name="speed" id="scale" value="100" min="0" max="200" data-show-value="true" onclick="rescaleSong(this.value)">
                 </div>
                 <div id="curr-chord-pic"><img src="img/bignull.png"></div>
-		<div id="curr-chord"></div>
+                <div id="curr-chord"></div>
               </div>
               <div class="col-md-9 height">
                 <div class="lyrics">
