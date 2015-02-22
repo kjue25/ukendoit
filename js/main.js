@@ -1,6 +1,6 @@
 $(document).ready ( function (){
-	showChords();
-	showSong();
+  showChords();
+  showSong();
 });
 
 /* TODO: calculate chords from song */
@@ -13,18 +13,18 @@ var song = JSON.parse('{"verses":[[[{"delay": "0", "txt": "Don\'t", "chord": "C"
 var curr_delay = 0;
 var timeouts = [];
 function getWordHTML(word, highlighted) {
-    if (!word.hasOwnProperty('chord')) word.chord = "";
-    var html = "<div class=\"word\"><span class=\"chord\">"+word.chord+"</span><br>" + word.txt + "</div>";
-    if (highlighted)
-        return "<span class=\"highlight\">" + html + "</span> ";
-    return html;
+  if (!word.hasOwnProperty('chord')) word.chord = "";
+  var html = "<div class=\"word\"><span class=\"chord\">"+word.chord+"</span><br>" + word.txt + "</div>";
+  if (highlighted)
+    return "<span class=\"highlight\">" + html + "</span> ";
+  return html;
 }
 
 /* show chord! */
 function showChord(chord) {
-        $(".chords li").removeClass("active");
-        $(".chords " + "." + chord).addClass("active");
-	$("#curr-chord").html("<img src=\"img/" + chord + ".png\">");
+  $(".chords li").removeClass("active");
+  $(".chords " + "." + chord).addClass("active");
+  $("#curr-chord").html("<img src=\"img/" + chord + ".png\">");
 }
 
 /* highlights a word in a particular line
@@ -33,15 +33,18 @@ function showChord(chord) {
  * n: which word to highlight? if -1, highlight none of them
  */
 function highlightWord(line_elem, words, n) {
-    if (n != -1 && words[n].hasOwnProperty('chord') && words[n].chord != "") {
-	    showChord(words[n].chord);
-    }
-    if (n != -1)
-        curr_delay += parseInt(words[n].delay);
-    $(line_elem).html("");
-    for (var w in words)
-        $(line_elem).append(getWordHTML(words[w], n == w));
+  if (n != -1 && words[n].hasOwnProperty('chord') && words[n].chord != "") {
+    showChord(words[n].chord);
+  }
+  if (n != -1)
+    curr_delay += parseInt(words[n].delay);
+  $(line_elem).html("");
+  for (var w in words)
+    $(line_elem).append(getWordHTML(words[w], n == w));
 }
+
+//global for scaling the speed of scrolling
+var scale = 1;
 
 /* sets up timeouts for each line
  * line: array of words
@@ -49,19 +52,19 @@ function highlightWord(line_elem, words, n) {
  * d: total timeout delay
  */
 function playLine(line, el, d) {
-    var delay = d;
-    /* highlights each word */
-    for (var w in line) {
-        delay += parseInt(line[w].delay);
-        if (curr_delay <= delay)
-            timeouts.push (setTimeout(highlightWord, (delay - curr_delay), el, line, w));
-    }
-    return delay;
+  var delay = d;
+  /* highlights each word */
+  for (var w in line) {
+    delay += parseInt(line[w].delay);
+    if (curr_delay <= delay)
+      timeouts.push (setTimeout(highlightWord, ((delay - curr_delay))/scale, el, line, w));
+  }
+  return delay;
 }
 
 /* scrolls to line_elem */
 function scrollToLine (line_elem) {
-    $(".lyrics").scrollTo(line_elem, {offsetTop:'500'});
+  $(".lyrics").scrollTo(line_elem, {offsetTop:'500'});
 }
 
 var prev_el = null;
@@ -71,66 +74,75 @@ var prev_line = null;
  * d: total timeout delay
  */
 function playVerse(verse, v, d) {
-    var delay = d;
-    for (var l in verse) {
-        var el = $(".line" + l + ".verse" + v);
-        if (curr_delay <= delay) {
-            timeouts.push(setTimeout(scrollToLine, (delay - curr_delay), ".line" + l + ".verse" + v));
-            if (prev_el != null) {
-                timeouts.push (setTimeout(highlightWord, (delay - curr_delay) + parseInt(verse[l][0].delay), $(prev_el), prev_line, -1));
-	    }
-        }
-        delay = playLine(verse[l], el, delay);
-	prev_line = verse[l];
-        prev_el = el;
+  var delay = d;
+  for (var l in verse) {
+    var el = $(".line" + l + ".verse" + v);
+    if (curr_delay <= delay) {
+      timeouts.push(setTimeout(scrollToLine, (delay - curr_delay)/scale, ".line" + l + ".verse" + v));
+      if (prev_el != null) {
+        timeouts.push (setTimeout(highlightWord, ((delay - curr_delay)+ parseInt(verse[l][0].delay))/scale, $(prev_el), prev_line, -1));
+      }
     }
-    return delay;
+    delay = playLine(verse[l], el, delay);
+    prev_line = verse[l];
+    prev_el = el;
+  }
+  return delay;
 }
 
 /* sets up all timeouts for song
  */
 function playSong() {
-    if (timeouts.length > 0) return;
-    var delay = 0;
-    for (var v in song.verses)
-        delay = playVerse(song.verses[v], v, delay);
+  if (timeouts.length > 0) return;
+  var delay = 0;
+  for (var v in song.verses)
+    delay = playVerse(song.verses[v], v, delay);
 }
 
 /* removes all timeouts for song */
 function stopSong() {
-    for (var t in timeouts)
-        window.clearTimeout(timeouts[t]);
-    console.log(curr_delay);
-    timeouts = [];
+  for (var t in timeouts)
+    window.clearTimeout(timeouts[t]);
+  console.log(curr_delay);
+  timeouts = [];
+}
+
+/*scales delay for the song */
+function rescaleSong(newScale) {
+  stopSong();
+  scale = newScale/100;
+  console.log(scale);
+  curr_delay = curr_delay*scale;
+  playSong();
 }
 
 /* functions called onload: shows chords and shows song */
 function showChords () {
-    for (var c in chords) {
-        var e = $("#chord-list");
-        var chord = chords[c];
-        $(e).append("<li class=\"" + chord + "\"><img src=\"img/" + chord + ".png\"></li>");
-    }
+  for (var c in chords) {
+    var e = $("#chord-list");
+    var chord = chords[c];
+    $(e).append("<li class=\"" + chord + "\"><img src=\"img/" + chord + ".png\"></li>");
+  }
 }
 function showSong() {
-    var lyrics = $('#lyrics');
-    for (var v in song.verses) {
-        var verse = song.verses[v];
-        for (var l in verse) {
-            var el = $("<li class=\"line line" + l + " verse" + v + "\"></li>");
-            var line = verse[l];
-	    var last_chord = null;
-            for (var w in line) {
-                var word = line[w];
-		if (last_chord != null && word.chord == last_chord) {
-                    word.chord = "";
-		}
-                $(el).append(getWordHTML(line[w],false));
-		if (word.chord != "") last_chord = word.chord;
-            }
-            $(lyrics).append(el);
+  var lyrics = $('#lyrics');
+  for (var v in song.verses) {
+    var verse = song.verses[v];
+    for (var l in verse) {
+      var el = $("<li class=\"line line" + l + " verse" + v + "\"></li>");
+      var line = verse[l];
+      var last_chord = null;
+      for (var w in line) {
+        var word = line[w];
+        if (last_chord != null && word.chord == last_chord) {
+          word.chord = "";
         }
-        $(lyrics).append("<br>");
+        $(el).append(getWordHTML(line[w],false));
+        if (word.chord != "") last_chord = word.chord;
+      }
+      $(lyrics).append(el);
     }
+    $(lyrics).append("<br>");
+  }
 }
 
