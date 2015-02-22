@@ -1,8 +1,9 @@
 $(document).ready ( function (){
   showSong();
   // position line arrow!
-$("div#arrow").css({top: $(".lyrics").offset().top + $(".lyrics").height()/2-50}); 
+$("div#arrow").css({top: $(".lyrics").offset().top + $(".lyrics").height()/2-20}); 
 $("div#arrow").css({left: $("body").width()* 0.35});
+scrollToLine(".line0.verse0");
   //console.log(chords);
   //showChords();
 });
@@ -71,7 +72,7 @@ function playLine(line, el, d) {
 
 /* scrolls to line_elem */
 function scrollToLine (line_elem) {
-  $(".lyrics").scrollTo(line_elem, {offsetTop:"" + ($(".lyrics").height()/2 + 30)});
+  $(".lyrics").scrollTo(line_elem, {offsetTop:"" + ($(".lyrics").height()/2 + 60), duration:"200"});
 }
 
 var prev_el = null;
@@ -97,6 +98,12 @@ function playVerse(verse, v, d) {
   return delay;
 }
 
+function playOrPauseSong() {
+	console.log(timeouts.length);
+  if (timeouts.length > 0) stopSong();
+  else playSong();
+}
+
 /* sets up all timeouts for song
  */
 function playSong() {
@@ -104,6 +111,10 @@ function playSong() {
   var delay = 0;
   for (var v in song.verses)
     delay = playVerse(song.verses[v], v, delay);
+  setTimeout(function () {
+	  stopSong();
+  }, (delay - curr_delay + 500)/scale);
+  $(".playpause").html('<i class="fa fa-pause"></i>');
 }
 
 /* removes all timeouts for song */
@@ -111,8 +122,15 @@ function stopSong() {
 	$("span").removeClass("highlight");
   for (var t in timeouts)
     window.clearTimeout(timeouts[t]);
-  console.log(curr_delay);
   timeouts = [];
+  $(".playpause").html('<i class="fa fa-play"></i>');
+}
+
+function restartSong() {
+stopSong();
+curr_delay = 0;
+scrollToLine(".line0.verse0");
+
 }
 
 /*scales delay for the song */
@@ -164,7 +182,8 @@ function showSong() {
 }
 
 function changeLine(forward) {
-	if (timeouts.length > 0) return;
+	var playing = timeouts.length > 0;
+  if (playing) stopSong();
 	var totaldelay = 0;
 	var delays = [];
 	var lines = [];
@@ -180,23 +199,22 @@ function changeLine(forward) {
 			}
 		}
 	}
-	var ind;
+	var ind = delays.length - 1;
 	for (var d in delays) {	
 		if (curr_delay < delays[d]) {
 			ind = d-1;
 			break;
 		}
 	}
-
-	console.log(curr_delay);
-	console.log(forward);
 	if (forward && ind != delays.length - 1) {
-		curr_delay = delays[ind+1];
+		curr_delay = delays[ind+1]+1;
 		scrollToLine(lines[ind+1]);
 	}
 	if (!forward && ind != 0) {
-		curr_delay = delays[ind-1];
+		curr_delay = delays[ind-1]+1;
 		scrollToLine(lines[ind-1]);
 	}
+	if(playing)
+  	playSong();
 }
 
