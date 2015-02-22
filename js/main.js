@@ -44,7 +44,7 @@ function highlightWord(line_elem, words, n) {
     showChord(words[n].chord);
   }
   if (n != -1)
-    curr_delay += parseInt(words[n].delay);///scale;
+    curr_delay += parseInt(words[n].delay)/scale;
   $(line_elem).html("");
   for (var w in words)
     $(line_elem).append(getWordHTML(words[w], n == w));
@@ -60,9 +60,9 @@ function playLine(line, el, d) {
   var delay = d;
   /* highlights each word */
   for (var w in line) {
-    delay += parseInt(line[w].delay);///scale;
+    delay += parseInt(line[w].delay)/scale;
     if (curr_delay <= delay)
-      timeouts.push (setTimeout(highlightWord, (delay - curr_delay)/scale, el, line, w));
+      timeouts.push (setTimeout(highlightWord, delay/scale - curr_delay/scale, el, line, w));
   }
   return delay;
 }
@@ -83,10 +83,10 @@ function playVerse(verse, v, d) {
   for (var l in verse) {
     var el = $(".line" + l + ".verse" + v);
     if (curr_delay <= delay) {
-      timeouts.push(setTimeout(scrollToLine, (delay - curr_delay)/scale, ".line" + l + ".verse" + v));
-      /* clearing prevoius line! */
-      if (prev_el != null)
-        timeouts.push (setTimeout(highlightWord, (delay - curr_delay + parseInt(verse[l][0].delay))/scale, $(prev_el), prev_line, -1));
+      timeouts.push(setTimeout(scrollToLine, delay/scale - curr_delay/scale, ".line" + l + ".verse" + v));
+      if (prev_el != null) {
+        timeouts.push (setTimeout(highlightWord, (delay/scale - curr_delay/scale)+ parseInt(verse[l][0].delay)/scale, $(prev_el), prev_line, -1));
+      }
     }
     delay = playLine(verse[l], el, delay);
     prev_line = verse[l];
@@ -108,7 +108,7 @@ function playSong() {
 function stopSong() {
   for (var t in timeouts)
     window.clearTimeout(timeouts[t]);
-  $("span").removeClass("highlight");
+  console.log(curr_delay);
   timeouts = [];
 }
 
@@ -118,7 +118,7 @@ function rescaleSong(newScale) {
   if (timeouts.length > 0) wasPlaying = true 
   stopSong();
   newDelay = newScale/100;
-  //curr_delay = (curr_delay*scale)/(newDelay);
+  curr_delay = (curr_delay*scale)/(newDelay);
   scale = newDelay;
   console.log(scale);
   if (wasPlaying)
@@ -147,7 +147,7 @@ function showSong() {
         if (last_chord != null && word.chord == last_chord) {
           word.chord = "";
         }
-        $(el).append(getWordHTML(line[w], false));
+        $(el).append(getWordHTML(line[w],false));
         if (word.chord != "" && word.chord != null && chords.indexOf(word.chord) == -1)
           chords.push(word.chord);
         if (word.chord != "") {
