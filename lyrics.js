@@ -65,7 +65,7 @@ function demoHighlight(words, times, count) {
 $(function() {
 
 	var lyrics = $('#lyrics');
-	var words = lyrics.html().split(" "); //array of words
+	var words = lyrics.html().split(" ").filter(function(x) {return x != ''}); //array of words
 
 	console.log(words);
 
